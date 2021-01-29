@@ -1,0 +1,58 @@
+<div class="p-container">
+    <mat-toolbar color="primary" [class.mat-elevation-z8]="true">
+        Prova de Conceito - Indexação de Originários
+    </mat-toolbar>
+    <div class="p-grid">
+        <div class="c-indices">
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>Indices</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="lista-indices" *ngIf="mapa && mapa.length > 0">
+                        <div class="lista-item" *ngFor="let item of mapa" [style.background-color]="getColor(item.nomeIndice)" (click)="irParaIndice(item)">
+                            <div>{{item.nomeIndice}}</div>
+                            <div class="spacer"></div>
+                            <div class="subs">{{item.inicio}}/{{item.fim}}</div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="c-dois-paines">
+            <div class="c-thumbs">
+                <div class="thumbs-container">
+                    <div class="header">
+                        <h2>Páginas</h2>
+                        <span>{{paginaAtual?.length > 5 ? '+ ' + paginaAtual?.length : paginaAtual}} / {{totalPages}}</span>
+                        <span>
+                            <button [matMenuTriggerFor]="editMenu"  mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
+                                <mat-icon>add</mat-icon>
+                              </button>
+                              <mat-menu #editMenu="matMenu">
+                                <button mat-menu-item *ngFor="let indice of indices" (click)="selecaoIndice(indice)"><span class="item-lista-index" [style.background-color]="getColor(indice.nomeIndice)"></span> {{indice.nomeIndice}}</button>
+                              </mat-menu>
+                              <button mat-icon-button [matMenuTriggerFor]="optMenu" aria-label="Example icon button with a vertical three dot icon">
+                                <mat-icon>more_vert</mat-icon>
+                              </button>
+                              <mat-menu #optMenu="matMenu">
+                                <button mat-menu-item (click)="mostrarMapa()">Mostrar Mapa</button>
+                              </mat-menu>
+                        </span>
+                    </div>
+                    <div class="content">
+                        <pdf-viewer #thumbsView src="assets/files/AME.pdf" [render-text]="true" style="display: block;"
+                        [show-all]="true" [zoom]="0.3" (after-load-complete)="aposCompletarCarregamento($event)"
+                        (page-rendered)="paginaRenderizou($event)" [render-text]="false"></pdf-viewer>
+                    </div>
+                </div>
+            </div>
+            <div class="pagina">
+                <mat-card>
+                    <pdf-viewer #thumbsView src="assets/files/AME.pdf" [render-text]="true" style="display: block;"
+                        [show-all]="false" [page]="1" [zoom]=".9"  [(page)]="paginaAtual"></pdf-viewer>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>
